@@ -1,0 +1,241 @@
+<link href="__ADMIN__/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+<body>
+
+<div class="panel-body" style="padding-bottom:0px;">
+    <div class="ibox-content " style="padding-bottom: 0">
+        <form role="form" class="form-inline" onsubmit="return false;">
+            <div class="form-group">
+                <label class="row-sm-2 control-label">软件名称：</label>
+                <input type="text" id="sname" class="form-control" placeholder="请输入软件名称">
+                <label class="row-sm-2 control-label">&nbsp;&nbsp;&nbsp;&nbsp;软件名称：</label>
+                <input type="text" id="username" class="form-control" placeholder="请输入用户名称">
+                        <span class="form-group-btn">
+							<button type="button" class="btn btn-primary" style="margin-bottom:0px"
+                                    onclick="javascript:search()">搜索
+                            </button>
+						</span>
+            </div>
+            <div class="form-group">
+                           <span class="form-group-btn">
+                                  <button type="button" class="btn btn-primary" style="margin-bottom:0px"
+                                          onclick="javascript:reload()">刷新
+                                  </button>
+                           </span>
+            </div>
+        </form>
+    </div>
+    <table id="tb_departments"
+           data-show-fullscreen="true"
+           data-show-export="true"
+            ></table>
+
+</div>
+
+<script>
+    $(function () {
+        var grid = {};
+        var queryParamsArray = {};
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+        //2.初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    var TableInit = function () {
+
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            grid = $('#tb_departments').bootstrapTable({
+                url: '/admin/Soft_User/getSuLoginRecord',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toobar',//工具列
+                undefinedText: "无",
+                striped: true,//隔行换色
+                cache: false,//禁用缓存
+                pagination: true,//启动分页
+                sidePagination: 'server',//分页方式
+                pageNumber: 1,//初始化table时显示的页码
+                pageSize: 10,//每页条目
+                showFooter: false,//是否显示列脚
+                showPaginationSwitch: false,//是否显示 数据条数选择框
+                height: $(window).height() - 100, //自定义表格的高度
+                sortable: false,//排序
+                search: false,//启用搜索
+                showColumns: false,//是否显示 内容列下拉框
+                showRefresh: false,//显示刷新按钮
+                idField: 'id',//key值栏位
+                //clickToSelect: true,//点击选中checkbox
+                // singleSelect: true,//启用单行选中
+                exportDataType: 'all',
+                queryParams: oTableInit.queryParams,
+                onLoadSuccess: function (data) {   //表格数据加载成功事件
+                    rowCount = data.length - 1;
+                    $("#datatable").bootstrapTable('hideRow', {index: rowCount});
+                    $("#datatable td").attr("data-tableexport-msonumberformat", "\@");
+                    $("#datatable tr").attr("data-tableexport-display", "always");
+                },
+                onPageChange: function (number, size) {  //表格翻页事件
+                    $("#datatable").bootstrapTable('hideRow', {index: rowCount});
+                    $("#datatable td").attr("data-tableexport-msonumberformat", "\@");
+                    $("#datatable tr").attr("data-tableexport-display", "always");
+                },
+                showExport: true,  //是否显示导出按钮
+                buttonsAlign: "right",  //按钮位置
+                exportTypes: ['excel'],  //导出文件类型
+                Icons: 'glyphicon-export',
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'sname',
+                    title: '所属软件',
+                    align: 'center'
+                }, {
+                    field: 'username',
+                    title: '用户名',
+                    align: 'center'
+                }, {
+                    field: 'maccode',
+                    title: '机器码',
+                    align: 'center'
+                }, {
+                    field: 'ip',
+                    title: '登录IP',
+                    align: 'center'
+                }, {
+                    field: 'city',
+                    title: '登录位置',
+                    align: 'center'
+                },{
+                    field: 'softMD5',
+                    title: '主程序MD5',
+                    align: 'center'
+                }, {
+                    field: 'heart_time',
+                    title: '最后心跳时间',
+                    align: 'center'
+                }, {
+                    field: 'login_time',
+                    title: '登录时间',
+                    align: 'center'
+                }
+                    , {
+                        field: 'status',
+                        title: '状态',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            if (value == 0) {
+                                if (checkOnline(row.heart_time)) {
+                                    return '离线';
+                                } else {
+                                    return '在线';
+                                }
+                            } else {
+                                return '离线';
+                            }
+                        }
+                    },
+                    {
+                        field: 'login_time',
+                        title: '操作',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            return '<a onclick="goOut(' + row.id + ')">下线</a>';
+                        }
+                    }
+
+                ]
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit,   //页面大小
+                offset: params.offset,  //页码
+                sname: $("#sname").val(),
+                username: $("#username").val()
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function () {
+            //初始化页面上面的按钮事件
+        };
+
+        return oInit;
+    };
+    function reload() {
+        grid.bootstrapTable('refresh');
+    }
+</script>
+
+<!-- Bootstrap table -->
+<script src="__ADMIN__/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="__ADMIN__/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="__ADMIN__/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="__ADMIN__/js/plugins/layer/laydate/laydate.js"></script>
+<script>
+
+    function queryParams(params) {
+        var resultParams = $.extend({}, params, oTableInit.queryParams);
+        return resultParams;
+    }
+
+    function setQueryParams(key, value) {
+        oTableInit.queryParams[key] = value;
+    }
+    function search() {
+        $("#tb_departments").bootstrapTable("refreshOptions", {pageNumber: 1});
+        reload();
+    }
+    //删除软件用户
+    function goOut(id) {
+        if (id == '') {
+            layer.msg("用户编号不能缺省");
+        } else {
+            layer.confirm("下线用户将会导致用户心跳失败<br>您确定要下线该用户吗？", {title: '温馨提示', formType: 1}, function (index) {
+                $.ajax({
+                    url: "/admin/api/getOut.html?id=" + id,
+                    type: "post",
+                    dataType: "json",
+                    data: "id=" + id,
+                    success: function (data) {
+                        if (data.code == 0) {
+                            layer.msg(data.msg)
+                            layer.close(index);
+                            reload();
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        layer.msg("系统在开小差，请稍后再试");
+                    }
+                });
+            });
+        }
+    }
+    //检测心跳时间,判断是否在线
+    function checkOnline(date) {
+        date = date.substring(0, 19);
+        date = date.replace(/-/g, '/');
+        var timestamp = new Date(date).getTime() / 1000;
+        var now = new Date().getTime() / 1000;
+        return timestamp < (now - 301);
+    }
+    function getLocalTime(nS) {
+        return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+    }
+
+</script>

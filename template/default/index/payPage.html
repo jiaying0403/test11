@@ -1,0 +1,41 @@
+<link href="__ADMIN__/css/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+<link href="__ADMIN__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<body class="fixed-sidebar full-height-layout">
+<div class="ibox-content">
+    <form method="post" class="form-horizontal" action="/admin/pay/order.html" id="payform">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">充值金额</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="money"> <span class="help-block m-b-none">微信为原生支付,支付宝与QQ支付为码支付</span>
+            </div>
+        </div>
+
+            <div class="radio radio-info radio-inline">
+                <input type="radio" id="inlineRadio1" value="weixin" name="payType" checked="">
+                <label for="inlineRadio1"> 微信支付 </label>
+            </div>
+            <div class="radio radio-inline">
+                <input type="radio" id="inlineRadio2" value="alipay" name="payType">
+                <label for="inlineRadio2"> 支付宝支付 </label>
+            </div>
+            <div class="radio radio-inline">
+                <input type="radio" id="inlineRadio3" value="qq" name="payType">
+                <label for="inlineRadio3"> QQ钱包支付 </label>
+            </div>
+
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-2">
+                <button class="btn btn-primary" type="submit">确认充值</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary" type="submit" onclick="closeP()">取消充值</button>
+            </div>
+        </div>
+        </form>
+</div>
+<script>
+    function closeP() {
+//关闭iframe页面
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+    }
+</script>

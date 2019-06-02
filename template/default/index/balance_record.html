@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__ADMIN__/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__ADMIN__/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__ADMIN__/css/plugins/footable/footable.core.css" rel="stylesheet">
+
+    <link href="__ADMIN__/css/animate.css" rel="stylesheet">
+    <link href="__ADMIN__/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+<body class="gray-bg" >
+<div class="animated fadeInRight" style="padding: 1 1 1 1">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content" >
+            <form role="form" class="form-inline" >
+                <div class="form-group">
+                    <label class="row-sm-2 control-label">日期：</label>
+                    <input name="startTime" placeholder="开始日期" class="form-control layer-date" id="start">
+                    <input name="endTime" placeholder="结束日期" class="form-control layer-date" id="end">
+                </div>
+                <div class="form-group">
+                    <label class="row-sm-2 control-label">状态：</label> <select
+                        class="form-control" name="tradeStatus" id="tradeStatus">
+                    <option value="">不限</option>
+                    <option value="0">转账进行中</option>
+                    <option value="1">转账完成</option>
+                    <option value="2">转账失败</option>
+                </select> <span class="form-group-btn">
+							<button type="button" class="btn btn-primary"
+                                    style="margin-bottom:0px" onclick="javascript:search()">搜索</button>
+						</span>
+                </div>
+                <div class="form-group">
+                           <span class="form-group-btn">
+                                  <button type="button" class="btn btn-primary" style="margin-bottom:0px" onclick="javascript:reload()">刷新</button>
+                           </span>
+                </div>
+            </form>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div class="example-wrap">
+                        <div class="example">
+                            <table id="listTrade" data-toggle="table" ></table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="__ADMIN__/js/jquery.min.js?v=2.1.4"></script>
+<script src="__ADMIN__/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="__ADMIN__/js/plugins/footable/footable.all.min.js"></script>
+
+<!-- 自定义js -->
+<script src="__ADMIN__/js/content.js?v=1.0.0"></script>
+<script>
+    var start={elem:"#start",format:"YYYY-MM-DD hh:mm:ss",max:"2099-06-16 23:59:59",istime:true,istoday:false,choose:function(datas){end.min=datas;end.start=datas}};
+    var end={elem:"#end",format:"YYYY-MM-DD hh:mm:ss",max:"2099-06-16 23:59:59",istime:true,istoday:false,choose:function(datas){start.max=datas}};
+    laydate(start);
+    laydate(end);
+</script>
+</body>
+</html>

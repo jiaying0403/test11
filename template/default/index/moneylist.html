@@ -1,0 +1,171 @@
+<link href="__ADMIN__/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+<body >
+
+<div class="panel-body" style="padding-bottom:0px;">
+    <div class="ibox-content ">
+        <form role="form" class="form-inline">
+            <div class="form-group">
+                <label class="row-sm-2 control-label">日期：</label>
+                <input name="startTime" placeholder="开始时间" class="form-control layer-date" id="start">
+                <input name="endTime" placeholder="结束时间" class="form-control layer-date" id="end">
+            </div>
+            <div class="form-group">
+                <label class="row-sm-2 control-label">类型：</label> <select class="form-control" name="tradeStatus" id="type">
+                <option value="">不限</option>
+                <option value="0">支出</option>
+                <option value="1">收入</option>
+            </select> <span class="form-group-btn">
+							<button type="button" class="btn btn-primary" style="margin-bottom:0px" onclick="javascript:search()">搜索</button>
+						</span>
+            </div>
+            <div class="form-group">
+                           <span class="form-group-btn">
+                                  <button type="button" class="btn btn-primary" style="margin-bottom:0px" onclick="javascript:reload()">刷新</button>
+                           </span>
+            </div>
+        </form>
+    </div>
+    <table id="tb_departments"
+           data-show-fullscreen="true"
+           data-show-export="true"
+            ></table>
+
+</div>
+
+<script>
+    $(function () {
+        var grid ={};
+        var queryParamsArray = {};
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+        //2.初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    var TableInit = function () {
+
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+                grid=$('#tb_departments').bootstrapTable({
+                url: '/admin/user/getMoneyList',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toobar',//工具列
+                striped: true,//隔行换色
+                cache: false,//禁用缓存
+                pagination: true,//启动分页
+                sidePagination: 'server',//分页方式
+                pageNumber: 1,//初始化table时显示的页码
+                pageSize: 10,//每页条目
+                showFooter: false,//是否显示列脚
+                showPaginationSwitch: false,//是否显示 数据条数选择框
+                sortable: false,//排序
+                search: false,//启用搜索
+                showColumns: false,//是否显示 内容列下拉框
+                showRefresh: false,//显示刷新按钮
+                idField: 'id',//key值栏位
+                clickToSelect: true,//点击选中checkbox
+                singleSelect: true,//启用单行选中
+                exportDataType:'all',
+                    height: $(window).height() - 100, //自定义表格的高度
+                queryParams: oTableInit.queryParams,
+                onLoadSuccess:function(data){   //表格数据加载成功事件
+                    rowCount = data.length-1;
+                    $("#datatable").bootstrapTable('hideRow', {index:rowCount});
+                    $("#datatable td").attr("data-tableexport-msonumberformat","\@");
+                    $("#datatable tr").attr("data-tableexport-display","always");
+                },
+                onPageChange:function(number,size){  //表格翻页事件
+                    $("#datatable").bootstrapTable('hideRow', {index:rowCount});
+                    $("#datatable td").attr("data-tableexport-msonumberformat","\@");
+                    $("#datatable tr").attr("data-tableexport-display","always");
+                },
+                showExport: true,  //是否显示导出按钮
+                buttonsAlign:"right",  //按钮位置
+                exportTypes:['excel'],  //导出文件类型
+                Icons:'glyphicon-export',
+                columns: [{
+                    field: 'money',
+                    title: '变动金额',
+                    align: 'center'
+                },{
+                    field: 'charge',
+                    title: '手续费',
+                    align: 'center'
+                }, {
+                    field: 'after',
+                    title: '变动后余额',
+                    align: 'center'
+                }, {
+                    field: 'type',
+                    title: '变动类型',
+                    align: 'center'
+                }, {
+                    field: 'info',
+                    title: '变动说明',
+                    align: 'center'
+                }, {
+                    field: 'add_time',
+                    title: '变动时间'
+                }, ]
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit,   //页面大小
+                offset: params.offset,  //页码
+                start: $("#start").val(),
+                superid:{$superid},
+                end: $("#end").val(),
+                type: $("#type").val()
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function () {
+            //初始化页面上面的按钮事件
+        };
+
+        return oInit;
+    };
+    function reload(){
+        grid.bootstrapTable('refresh');
+    }
+</script>
+
+<!-- Bootstrap table -->
+<script src="__ADMIN__/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="__ADMIN__/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="__ADMIN__/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="__ADMIN__/js/plugins/layer/laydate/laydate.js"></script>
+<script>
+    var start={elem:"#start",format:"YYYY-MM-DD hh:mm:ss",max:"2099-06-16 23:59:59",istime:true,istoday:false,choose:function(datas){end.min=datas;end.start=datas}};
+    var end={elem:"#end",format:"YYYY-MM-DD hh:mm:ss",max:"2099-06-16 23:59:59",istime:true,istoday:false,choose:function(datas){start.max=datas}};
+    laydate(start);
+    laydate(end);
+    function queryParams(params){
+        var resultParams = $.extend({},params,oTableInit.queryParams);
+        return resultParams;
+    }
+
+    function setQueryParams(key,value){
+        oTableInit.queryParams[key] = value;
+    }
+    function search(){
+        $("#tb_departments").bootstrapTable("refreshOptions",{pageNumber:1});
+        reload();
+    }
+
+</script>

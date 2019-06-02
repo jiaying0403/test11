@@ -1,0 +1,223 @@
+<link href="__ADMIN__/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+<body >
+
+<div class="panel-body" style="padding-bottom:0px;">
+    <div class="ibox-content " style="padding-bottom: 0">
+        <form role="form" class="form-inline" onsubmit="return false;">
+            <div class="form-group">
+                <label class="row-sm-2 control-label">软件名称：</label>
+                <input type="text" id="softName" class="form-control" placeholder="请输入软件名称" >
+                        <span class="form-group-btn">
+							<button type="button" class="btn btn-primary" style="margin-bottom:0px" onclick="javascript:search()">搜索</button>
+						</span>
+            </div>
+            <div class="form-group">
+                           <span class="form-group-btn">
+                                  <button type="button" class="btn btn-primary" style="margin-bottom:0px" onclick="javascript:reload()">刷新</button>
+                           </span>
+            </div>
+            <div class="form-group">
+                           <span class="form-group-btn">
+                                  <button type="button" class="btn btn-primary" style="margin-bottom:0px" onclick="javascript:addVariable()">添加变量</button>
+                           </span>
+            </div>
+        </form>
+    </div>
+    <table id="tb_departments"
+           data-show-fullscreen="true"
+           data-show-export="true"
+            ></table>
+
+</div>
+
+<script>
+    $(function () {
+        var grid ={};
+        var queryParamsArray = {};
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+        //2.初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    var TableInit = function () {
+
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            grid=$('#tb_departments').bootstrapTable({
+                url: '/admin/soft/getVariableList',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toobar',//工具列
+                undefinedText : "无",
+                striped: true,//隔行换色
+                cache: false,//禁用缓存
+                pagination: true,//启动分页
+                sidePagination: 'server',//分页方式
+                pageNumber: 1,//初始化table时显示的页码
+                pageSize: 10,//每页条目
+                showFooter: false,//是否显示列脚
+                showPaginationSwitch: false,//是否显示 数据条数选择框
+                sortable: false,//排序
+                search: false,//启用搜索
+                showColumns: false,//是否显示 内容列下拉框
+                showRefresh: false,//显示刷新按钮
+                height: $(window).height() - 100, //自定义表格的高度
+                idField: 'id',//key值栏位
+                //clickToSelect: true,//点击选中checkbox
+                // singleSelect: true,//启用单行选中
+                exportDataType:'all',
+                queryParams: oTableInit.queryParams,
+                onLoadSuccess:function(data){   //表格数据加载成功事件
+                    rowCount = data.length-1;
+                    $("#datatable").bootstrapTable('hideRow', {index:rowCount});
+                    $("#datatable td").attr("data-tableexport-msonumberformat","\@");
+                    $("#datatable tr").attr("data-tableexport-display","always");
+                },
+                onPageChange:function(number,size){  //表格翻页事件
+                    $("#datatable").bootstrapTable('hideRow', {index:rowCount});
+                    $("#datatable td").attr("data-tableexport-msonumberformat","\@");
+                    $("#datatable tr").attr("data-tableexport-display","always");
+                },
+                showExport: true,  //是否显示导出按钮
+                buttonsAlign:"right",  //按钮位置
+                exportTypes:['excel'],  //导出文件类型
+                Icons:'glyphicon-export',
+                columns: [{
+                    checkbox : true
+                },{
+                    field: 'sname',
+                    title: '软件名称',
+                    align: 'center'
+                }, {
+                    field: 'name',
+                    title: '变量名称',
+                    align: 'center'
+                }, {
+                    field: 'value',
+                    title: '变量内容',
+                    align: 'center',
+                    formatter : function(value,row,index){
+                        return value.length<7?value:value.slice(0,6)+"..."
+                    }
+                }, {
+                    field: 'create_time',
+                    title: '创建时间',
+                    align: 'center'
+                },{
+                    field: '',
+                    title: '操作',
+                    formatter : function(value,row,index){
+                        var html = "<a onClick='javascript:editVariable("+row.id+")'>编辑</a>&nbsp;&nbsp;" +
+                                "<a onClick='javascript:deleteVariable("+row.id+")'>删除</a>&nbsp;&nbsp;";
+                        return html;
+                    }
+                }, ]
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit,   //页面大小
+                offset: params.offset,  //页码
+                name: $("#softName").val()
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function () {
+            //初始化页面上面的按钮事件
+        };
+
+        return oInit;
+    };
+    function reload(){
+        grid.bootstrapTable('refresh');
+    }
+</script>
+
+<!-- Bootstrap table -->
+<script src="__ADMIN__/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="__ADMIN__/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="__ADMIN__/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="__ADMIN__/js/plugins/layer/laydate/laydate.js"></script>
+<script>
+
+    function queryParams(params){
+        var resultParams = $.extend({},params,oTableInit.queryParams);
+        return resultParams;
+    }
+
+    function setQueryParams(key,value){
+        oTableInit.queryParams[key] = value;
+    }
+    function search(){
+        $("#tb_departments").bootstrapTable("refreshOptions",{pageNumber:1});
+        reload();
+    }
+    //添加软件
+    function addVariable()
+    {
+        layer.open({
+            type: 2,
+            title: '{$user.username} - 添加变量',
+            shadeClose: true,
+            shade: false,
+            offset: '100px',
+            area: ['800px', '520px'],
+            content: ['/admin/soft/addVariable.html','no']
+        });
+    }
+    //编辑软件
+    function editVariable(id)
+    {
+        layer.open({
+            type: 2,
+            title: '{$user.username} - 远程变量编辑',
+            shadeClose: true,
+            shade: false,
+            offset: '100px',
+            area: ['800px', '520px'],
+            content: ['/admin/soft/addVariable.html?id='+id,'no']
+        });
+    }
+    //删除软件
+    function deleteVariable(id)
+    {
+        if(id == ''){
+            layer.msg("变量编号不能缺省");
+        }else{
+            layer.confirm("您确定要删除该变量吗？",{title: '温馨提示', formType: 1},function(index){
+                $.ajax({
+                    url : "/admin/Soft/deleteVariable",
+                    type:"post",
+                    dataType:"json",
+                    data:"id="+id,
+                    success:function(data){
+                        if(data.code==0){
+                            layer.msg(data.msg)
+                            layer.close(index);
+                            reload();
+                        }else{
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrown){
+                        layer.msg("系统在开小差，请稍后再试");
+                    }
+                });
+            });
+        }
+    }
+</script>

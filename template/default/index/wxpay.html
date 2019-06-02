@@ -1,0 +1,103 @@
+<style>
+    /*web background*/
+    .container{
+        display:table;
+        height:100%;
+    }
+
+    .row{
+
+    }
+    /* centered columns styles */
+    .row-centered {
+        text-align:center;
+    }
+    .col-centered {
+        display:inline-block;
+        float:none;
+        margin-right:-4px;
+    }
+</style>
+<body class="gray-bg">
+<div class="container">
+    <div class="row row-centered ">
+        <div class="col-md-6 col-centered">
+                        <div class="article-title text-center">
+                        <h2>使用微信扫一扫完成支付</h2>
+                        </div>
+                    <div class="ibox-content">
+                        <table class="table">
+                            <h4>订单详情</h4>
+                            <tbody>
+                            <tr>
+                                <td><strong>订单编号：</strong>
+                                </td>
+                                <td>{$record.orderno}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>创建时间：</strong>
+                                </td>
+                                <td>{$record.order_time}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>支付类型：</strong>
+                                </td>
+                                <td>{$record.type}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <h1>¥{$record.money}</h1>
+                        </div>
+                        <img src="{:url('admin/tools/qrcode')}?url={$code_url}"  width="210" height="210" >
+                        <h2>付款后自动到账,未到账联系客服</h2>
+                    </div>
+                </div>
+        </div>
+    </div>
+<script>
+    $(function() {
+       var interval= setInterval(function(){
+                $.ajax({
+                    type : 'POST',
+                    url : '{$check_url}',
+                    data : {},
+                    dataType : "JSON",
+                    success : function(data) {
+                        if(data.code<0){
+                            clearInterval(interval);
+                            layer.open({
+                                title:'失败',
+                                content:data.msg
+                                ,btn: ['知道啦']
+                            });
+                        }else{
+                            //正常查询非负数的状态
+                            if(data.status=="支付完成")
+                            {
+                                clearInterval(interval);
+                                //跳转到个人信息页面
+                                layer.msg('支付成功',{time: 3000},function(){
+                                    //跳转到个人信息
+                                    window.location.href="{$jump}?orderNo="+data.orderno
+                                });
+                            }
+                            if(data.status=="未支付")
+                            {
+                                //逻辑代码
+                            }
+                            if(data.status=="未知状态")
+                            {
+                                //逻辑代码
+                            }
+                        }
+                    },
+                    error : function() {
+                        alert("网络错误！");
+                        clearInterval(interval);
+                    }
+                });
+
+        } ,1000);
+    });
+</script>

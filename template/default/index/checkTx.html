@@ -1,0 +1,148 @@
+<link href="__ADMIN__/css/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+<link href="__ADMIN__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<body class="fixed-sidebar full-height-layout">
+<div class="ibox-content">
+    <form method="post" class="form-horizontal" id="checkTxForm">
+        <div class="form-group hidden">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+               <input name="id" value="{$user.id}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户名</label>
+            <div class="col-sm-10">
+                <strong>{$user.username} &nbsp;&nbsp;&nbsp;<a href="/moneylist.html?superid={$user.uid}" target="_blank">查看该用户流水</a> </strong>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">真实姓名</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="" value="{$user.name}"> <span class="help-block m-b-none"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">支付宝</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="" value="{$user.alipay}"> <span class="help-block m-b-none"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">QQ</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="" value="{$user.qq}"> <span class="help-block m-b-none"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">提现金额</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="" value="{$user.money}"> <span class="help-block m-b-none"></span>
+            </div>
+        </div>
+        <label class="col-sm-2 control-label">操作</label>
+        <div class="radio radio-info radio-inline">
+            <input type="radio" id="inlineRadio1" value="0" name="alt" checked="">
+            <label for="inlineRadio1"> 通过 </label>
+        </div>
+        <div class="radio radio-inline">
+            <input type="radio" id="inlineRadio2" value="1" name="alt">
+            <label for="inlineRadio2"> 拒绝 </label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">拒绝理由</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="reason" value=""> <span class="help-block m-b-none"></span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-2">
+                <button class="btn btn-primary" type="submit">提交审核</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary" type="submit" onclick="closeP()">取消审核</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    function closeP() {
+//关闭iframe页面
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+    }
+    //jquery加载后执行的
+    (function ($) {
+
+        //字母数字
+        jQuery.validator.addMethod("alnum", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+        }, "只能包括英文字母和数字");
+        //表单验证
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#checkTxForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 1,
+                    maxlength:20,
+                    alnum:true
+                },
+                value: {
+                    required: true,
+                    minlength: 1,
+                    maxlength:200
+                },
+                url:{
+                    url:true
+                }
+            },
+            messages: {
+                cardValue: {
+                    required: icon + "请输入名称 ",
+                    minlength: icon + "必须1-20个字符以上",
+                    maxlength: icon + "必须1-20个字符以上"
+                },
+                cardPrice:{
+                    required: icon + "请输入内容 ",
+                    minlength: icon + "必须1-200个字符以上",
+                    maxlength: icon + "必须1-200个字符以上"
+                }
+            },
+            submitHandler: function (form) {
+                var formParam = $("#checkTxForm").serialize();
+                //ajax提交更新用户数据
+                $.ajax({
+                    type: 'post',
+                    url: '/admin/user/checkTxApply.html',
+                    data: formParam,
+                    cache: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        //请求成功
+                        if (data.code < 0) {
+                            layer.msg(data.msg, {icon: 5});
+                        } else {
+                            layer.open({
+                                title: '成功',
+                                content: data.msg
+                                , btn: ['知道啦']
+                                , yes: function (index, layero) {
+                                    //按钮【按钮一】的回调\
+                                    //刷新父页面
+                                    //window.parent.location.reload();
+                                    window.parent.reload();
+                                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                    parent.layer.close(index);  // 关闭layer
+                                }
+                            });
+
+                        }
+                    },
+                    error: function () {
+                        // view("异常！");
+                        alert("网络错误！");
+                    }
+                });
+            }
+        });
+    })(jQuery);
+</script>

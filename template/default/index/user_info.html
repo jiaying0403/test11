@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__ADMIN__/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__ADMIN__/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__ADMIN__/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__ADMIN__/css/animate.css" rel="stylesheet">
+    <link href="__ADMIN__/css/style.css?v=4.1.11" rel="stylesheet">
+</head>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="widget style1">
+                <div class="row">
+                    <div class="col-xs-4 text-center">
+                        <i class="fa fa-trophy fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>今日收入</span>
+                        <h2 class="font-bold">&yen;0.00</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-cloud fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>软件数量</span>
+                        <h2 class="font-bold">11</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget style1 lazur-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-child fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>代理商数</span>
+                        <h2 class="font-bold">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget style1 yellow-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-hourglass-start fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>待审核代理数</span>
+                        <h2 class="font-bold">11</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="widget style1">
+
+                <div class="row">
+                    <div class="col-xs-4 text-center">
+                        <i class="fa fa-btc fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>总收入</span>
+                        <h2 class="font-bold">&yen;0.00</h2>
+                    </div>
+                </div>
+                <!--                     <div class="row">
+                                         <a class="pull-right" onclick="javascript:cashApplyOut();">申请提现</a>
+                                    </div>   -->
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-user-plus fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>用户总数</span>
+                        <h2 class="font-bold">38</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget style1 lazur-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-signal fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>在线人数</span>
+                        <h2 class="font-bold">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget style1 yellow-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>过期用户数</span>
+                        <h2 class="font-bold">33</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="ibox">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="m-b-md">
+                            <a href="javascript:changePassword()" class="btn btn-white btn-xs pull-right">修改密码</a>
+                            <a href="javascript:modifyUserInfo()" class="btn btn-white btn-xs pull-right">修改资料</a>
+                            <h2>个人资料</h2>
+                        </div>
+                        <div class="col-sm-5">
+                            <dl class="dl-horizontal">
+                                <dt>Secret Key：</dt>
+                                <dd>0A563B938BF054BEE4229C3055D7FBC5
+                                    <a class="text-navy" style="margin-left:10px;" onclick="javascript:resetSecretKey()">重置</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-7">
+                            <dl class="dl-horizontal">
+                                <dt>账户余额：</dt>
+                                <dd>0.00
+                                    <a class="text-navy" style="margin-left:10px;" onclick="javascript:topAccount()">充值</a>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <dl class="dl-horizontal">
+
+                            <dt>真实姓名：</dt>
+                            <dd>未实名</dd>
+                            <br>
+                            <dt>支付宝：</dt>
+                            <dd>138****7735
+
+                            </dd>
+                            <br>
+                            <dt>收款功能：</dt>
+                            <dd>
+
+                                未开通
+
+                                <a  class="text-navy"  style="margin-left:10px;" onclick="javascript:authenticationName()">申请开通</a>
+
+
+
+
+
+
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-sm-7" id="cluster_info">
+                        <dl class="dl-horizontal">
+                            <dt>QQ：</dt>
+                            <dd>214783030</dd>
+                            <br>
+                            <dt>Email：</dt>
+                            <dd>yshell@foxmail.com</dd>
+                            <br>
+                            <dt>手机：</dt>
+                            <dd>1380***7735</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="row m-t-sm">
+                    <div class="col-sm-12">
+                        <div class="panel blank-panel">
+                            <div class="panel-heading">
+                                <div class="panel-options">
+                                    <ul class="nav nav-tabs">
+                                        <li><a href="#tab-1" data-toggle="tab">系统消息</a></li>
+                                        <li><a href="#tab-2" data-toggle="tab">最近登陆</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="panel-body">
+
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab-1">
+                                        <div class="feed-activity-list">
+                                            <div class="feed-element">
+
+
+
+                                                <a href="#" class="pull-left"> <img alt="image"class="img-circle" src="http://www.freeyun.net:80/img/a2.jpg"></a>
+                                                <div class="media-body ">
+                                                    <strong>欢迎使用FreeYun网络验证系统</strong>
+                                                    <br>
+                                                    <br>
+                                                    <small class="text-muted">2017-09-10 01:43:06 来自 <strong>系统消息</strong></small>
+                                                    <div class="well">感谢您的注册，为享有高效优质的服务，请您务必遵守国家法律法规，切勿发布违法的软件！</div>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-2">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>时间</th>
+                                                <th>登陆IP</th>
+                                                <th>地理信息</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+
+
+                                            <tr>
+                                                <td>2019-03-18 11:00:54</td>
+                                                <td>183.160.244.23</td>
+                                                <td><p class="small">中国|0|安徽省|合肥市|电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2019-03-18 03:37:55</td>
+                                                <td>183.160.244.23</td>
+                                                <td><p class="small">中国|0|安徽省|合肥市|电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2019-03-16 10:16:28</td>
+                                                <td>183.160.104.203</td>
+                                                <td><p class="small">中国|0|安徽省|合肥市|电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-11-18 05:42:45</td>
+                                                <td>175.8.28.172</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-11-05 09:42:35</td>
+                                                <td>219.152.48.220</td>
+                                                <td><p class="small">重庆市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-30 07:03:59</td>
+                                                <td>175.8.85.236</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-27 08:12:50</td>
+                                                <td>175.8.96.218</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-27 03:47:39</td>
+                                                <td>222.247.119.253</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-27 02:34:32</td>
+                                                <td>222.240.33.8</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-27 01:07:57</td>
+                                                <td>175.8.61.92</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-27 12:01:41</td>
+                                                <td>175.8.61.92</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-27 11:33:42</td>
+                                                <td>119.85.150.14</td>
+                                                <td><p class="small">重庆市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-26 11:54:30</td>
+                                                <td>175.8.62.82</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-25 07:21:22</td>
+                                                <td>175.8.62.82</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-25 12:57:26</td>
+                                                <td>175.8.62.82</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-22 08:24:52</td>
+                                                <td>175.8.60.109</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-22 07:33:59</td>
+                                                <td>175.8.60.109</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-22 06:34:28</td>
+                                                <td>175.8.60.109</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-22 06:17:33</td>
+                                                <td>175.8.60.109</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2017-10-22 03:58:39</td>
+                                                <td>175.8.60.109</td>
+                                                <td><p class="small">湖南省长沙市_电信</p></td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="__ADMIN__/js/jquery.min.js?v=2.1.4"></script>
+<script src="__ADMIN__/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="__ADMIN__/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="__ADMIN__/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="__ADMIN__/js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<script src="__ADMIN__/js/hplus.js?v=4.1.0"></script>
+<script type="text/javascript" src="__ADMIN__/js/contabs.js"></script>
+
+<!-- 第三方插件 -->
+<script src="__ADMIN__/js/plugins/pace/pace.min.js"></script>
+
+
+
+
+</body>
+</html>

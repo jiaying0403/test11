@@ -1,0 +1,410 @@
+<div class="ibox-content" style="width:800px;height:480px;">
+    <form class="form-horizontal" id="editSoftForm" style="width:100%;height:100%">
+
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基础信息 </a>
+                        </li>
+                        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false"> 注册/赠送 </a>
+                        </li>
+                        <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false"> 登录/换绑 </a>
+                        </li>
+                        <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false"> 通讯密钥 </a>
+                        </li>
+                        <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="false"> 系统售卡 </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="panel-body">
+                                <div class="form-group hidden">
+                                    <label class="col-sm-2 control-label">软件ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="id" value="{$soft.id}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">软件名称</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="name" value="{$soft.name}"
+                                               placeholder="请输入软件名称">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">服务状态</label>
+
+                                    <div class="col-sm-10">
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" id="inlineRadio1" value="1" name="status"
+                                                   {$soft.status=='收费'?"checked":""}>
+                                            <label for="inlineRadio1"> 收费运营 </label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" id="inlineRadio2" value="0" name="status"
+                                                   {$soft.status=='免费'?"checked":""}>
+                                            <label for="inlineRadio2"> 免费开放 </label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" id="inlineRadio3" value="2" name="status"
+                                                   {$soft.status=='关闭验证'?"checked":""}>
+                                            <label for="inlineRadio3"> 关闭验证 </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">软件密钥</label>
+
+                                    <div class="col-sm-10" style="margin-top:5px;">
+                                        {$soft.key}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">软件公告</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" placeholder="请输入内容" name="notice">{$soft.notice}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">软件基础数据(软件初始化获取的数据)</label>
+
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" placeholder="请输入内容" name="data">{$soft.data}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">注册状态</label>
+
+                                    <div class="col-sm-10">
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" id="inlineRadio4" value="0" name="openReg"
+                                                   {$soft.openReg==0?"checked":""}>
+                                            <label for="inlineRadio4"> 开放注册 </label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" id="inlineRadio5" value="1" name="openReg"
+                                                   {$soft.openReg==1?"checked":""}>
+                                            <label for="inlineRadio5"> 关闭注册 </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row no-gutters">
+                                    <label class="col-sm-2 control-label">注册赠送</label>
+
+                                    <div class="col-sm-10">
+                                        <div class="col-sm-5 " style="    padding-left: 0px;">
+                                            <div class="radio radio-info radio-inline">
+                                                <input type="radio" id="inlineRadio6" value="0"
+                                                       name="regFree" {$soft.regFree==0?"checked":""}>
+                                                <label for="inlineRadio6"> 无 </label>
+                                            </div>
+                                            <div class="radio radio-info radio-inline">
+                                                <input type="radio" id="inlineRadio7" value="1"
+                                                       name="regFree" {$soft.regFree==1?"checked":""}>
+                                                <label for="inlineRadio7"> 时间 </label>
+                                            </div>
+                                            <div class="radio radio-info radio-inline">
+                                                <input type="radio" id="inlineRadio70" value="2"
+                                                       name="regFree" {$soft.regFree==2?"checked":""}>
+                                                <label for="inlineRadio70"> 点数 </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7 " style="    padding-left: 0px;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">赠送值</label>
+
+                                                <div class="col-sm-9">
+
+                                                    <div class="input-group spinner5" style="width:142px;">
+                                                        <input type="text" class="form-control"
+                                                               value="{$soft.regFreePoint}" name="regFreePoint"
+                                                               style="margin-top:0" placeholder="小时/点数">
+
+                                                        <div class="input-group-btn-vertical">
+                                                            <button class="btn btn-default" type="button"><i
+                                                                    class="fa fa-caret-up"></i></button>
+                                                            <button class="btn btn-default" type="button"><i
+                                                                    class="fa fa-caret-down"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row no-gutters">
+                                    <label class="col-sm-2 control-label">时段免费</label>
+
+                                    <div class="col-sm-10">
+                                        <div class="col-sm-5 " style="    padding-left: 0px;">
+                                            <div class="radio radio-info radio-inline">
+                                                <input type="radio" id="inlineRadio8" value="0"
+                                                       name="timeFree" {$soft.timeFree==0?"checked":""}>
+                                                <label for="inlineRadio8"> 无 </label>
+                                            </div>
+                                            <div class="radio radio-info radio-inline">
+                                                <input type="radio" id="inlineRadio9" value="1"
+                                                       name="timeFree" {$soft.timeFree==1?"checked":""}>
+                                                <label for="inlineRadio9"> 时间 </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7 " style="    padding-left: 0px;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">时间范围</label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="col-sm-4 row">
+                                                        <div class="input-group spinner" style="width:60px;">
+                                                            <input type="text" class="form-control"
+                                                                   value="{$soft.timeFreePointStart}"
+                                                                   name="timeFreePointStart"
+                                                                   style="margin-top:0">
+
+                                                            <div class="input-group-btn-vertical">
+                                                                <button class="btn btn-default" type="button"><i
+                                                                        class="fa fa-caret-up"></i></button>
+                                                                <button class="btn btn-default" type="button"><i
+                                                                        class="fa fa-caret-down"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-1 text-right"
+                                                         style="text-align: center;padding-top:8px;padding-right: 10px;margin:0;margin-left:10px;">
+                                                        <strong> - </strong>
+                                                    </div>
+                                                    <div class="col-sm-4 row">
+                                                        <div class="input-group spinner2" style="width:60px;">
+                                                            <input type="text" class="form-control"
+                                                                   value="{$soft.timeFreePointEnd}"
+                                                                   name="timeFreePointEnd"
+                                                                   style="margin-top:0">
+
+                                                            <div class="input-group-btn-vertical">
+                                                                <button class="btn btn-default" type="button"><i
+                                                                        class="fa fa-caret-up"></i></button>
+                                                                <button class="btn btn-default" type="button"><i
+                                                                        class="fa fa-caret-down"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3 text-right"
+                                                         style="text-align: center;padding-top:8px;padding-right: 10px;margin:0;margin-left:10px;">
+                                                        <strong> 小时 </strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">赠送换绑</label>
+                                    <div class="col-sm-5">
+                                        <div class="input-group spinner3" style="width:100px;">
+                                            <input type="text" class="form-control" value="{$soft.freeChangeBundled}"
+                                                   style="margin-top:0" name="freeChangeBundled">
+
+                                            <div class="input-group-btn-vertical">
+                                                <button class="btn btn-default" type="button"><i
+                                                        class="fa fa-caret-up"></i></button>
+                                                <button class="btn btn-default" type="button"><i
+                                                        class="fa fa-caret-down"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="tab-3" class="tab-pane">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">验证策略</label>
+
+                                    <div class="col-sm-10">
+                                        <div class="radio radio-info radio-inline" onclick="onTimeMode()">
+                                            <input type="radio" id="inlineRadio10" value="0" name="verifyMode"
+                                                   {$soft.verifyMode==0?"checked":""}>
+                                            <label for="inlineRadio10"> 时间 </label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline" onclick="onPointMode()">
+                                            <input type="radio" id="inlineRadio11" value="1" name="verifyMode"
+                                                   {$soft.verifyMode==1?"checked":""}>
+                                            <label for="inlineRadio11"> 扣点 </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group {eq name=" $soft.verifyMode
+                                " value="0" }hidden{/eq}" id="kds">
+                                <label class="col-sm-2 control-label">扣点数</label>
+
+                                <div class="col-sm-5">
+                                    <div class="input-group spinner4" style="width:100px;">
+                                        <input type="text" class="form-control" value="{$soft.pointStep}"
+                                               style="margin-top:0" name="pointStep">
+
+                                        <div class="input-group-btn-vertical">
+                                            <button class="btn btn-default" type="button"><i
+                                                    class="fa fa-caret-up"></i></button>
+                                            <button class="btn btn-default" type="button"><i
+                                                    class="fa fa-caret-down"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">顶号模式</label>
+
+                                <div class="col-sm-10">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio12" value="0" name="topLoginType"
+                                               {$soft.topLoginType==0?"checked":""}>
+                                        <label for="inlineRadio12"> 不顶号登录 </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio13" value="1" name="topLoginType"
+                                               {$soft.topLoginType==1?"checked":""}>
+                                        <label for="inlineRadio13"> 顶号登录 </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">多开策略</label>
+
+                                <div class="col-sm-10">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio14" value="0" name="multiType"
+                                               {$soft.multiType==0?"checked":""}>
+                                        <label for="inlineRadio14"> 账号+机器码 </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio15" value="1" name="multiType"
+                                               {$soft.multiType==1?"checked":""}>
+                                        <label for="inlineRadio15"> 账号 </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio16" value="2" name="multiType"
+                                               {$soft.multiType==2?"checked":""}>
+                                        <label for="inlineRadio16"> 无限制 </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">多开上限</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group spinner6" style="width:100px;">
+                                        <input type="text" class="form-control" value="{$soft.multiTypeValue}"
+                                               style="margin-top:0" name="multiTypeValue">
+
+                                        <div class="input-group-btn-vertical">
+                                            <button class="btn btn-default" type="button"><i
+                                                    class="fa fa-caret-up"></i></button>
+                                            <button class="btn btn-default" type="button"><i
+                                                    class="fa fa-caret-down"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">换绑策略</label>
+
+                                <div class="col-sm-10">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio17" value="0" name="isModifyMac"
+                                               {$soft.isModifyMac==0?"checked":""}>
+                                        <label for="inlineRadio17"> 不可换绑 </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio18" value="1" name="isModifyMac"
+                                               {$soft.isModifyMac==1?"checked":""}>
+                                        <label for="inlineRadio18"> 可换绑 </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="tab-5" class="tab-pane">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">说明</label>
+                                    <div class="col-sm-10" style="margin-top:5px;">
+                                            软件添加成功后,会有对应的售卡页面,这里设置售卡相关信息
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">软件出售页,作者留言信息</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" rows="3"  name="sale_remark" placeholder="系统售卡页面,作者想要显示的公告信息">{$soft.sale_remark}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="tab-4" class="tab-pane">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">加密算法</label>
+
+                                <div class="col-sm-10">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio19" value="0" name="encryptType"
+                                               {$soft.encryptType==0?"checked":""}>
+                                        <label for="inlineRadio19"> DES算法 </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="inlineRadio20" value="1" name="encryptType"
+                                               {$soft.encryptType==1?"checked":""}>
+                                        <label for="inlineRadio20"> AES算法 </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">加密KEY</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="privateKey"
+                                           value="{$soft.privateKey}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">加密盐</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="privateSalt"
+                                           value="{$soft.privateSalt}">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="col-sm-12" style="position: fixed;bottom: 15px;">
+            <div class="col-sm-offset-4">
+                <button class="btn btn-sm btn-white" type="submit">提交数据</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-sm btn-white" type="submit" onclick="closeP()">取消修改</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<link href="__ADMIN__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="__ADMIN__/css/plugins/jQueryUI/jquery-ui-1.10.5.custom.min.css" rel="stylesheet">
+<script src="__ADMIN__/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="__ADMIN__/js/soft.js"></script>
+
+
+
+

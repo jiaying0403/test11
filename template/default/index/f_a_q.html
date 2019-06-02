@@ -1,0 +1,85 @@
+
+<body class="gray-bg">
+<div class="row">
+    <div class="col-sm-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox-content m-b-sm border-bottom">
+                <div class="text-center p-lg">
+                    <h2>如果没有找到您需要的问题</h2>
+                    <span>您可以点击</span>
+                    <button title="Create new cluster" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> <span class="bold">加群提问</span>
+                    </button>按钮
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="row">
+                    <div class="col-md-7">
+                        <a data-toggle="collapse" href="faq.html#faq1" class="faq-question">初始化参数怎么来</a>
+                        <small><strong>几时</strong> <i class="fa fa-clock-o"></i> 2019-05-07 20:17</small>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="small font-bold"></span>
+                        <div class="tag-list">
+                            <span class="tag-item"></span>
+                            <span class="tag-item"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <span class="small font-bold"> </span>
+                        <br/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="faq1" class="panel-collapse collapse faq-answer">
+                            <p>
+                               1.在软件列表获取软件ID,密钥,版本管理添加你的版本号,服务器地址就是本站地址
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+
+
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#loading-example-btn').click(function () {
+            btn = $(this);
+            simpleLoad(btn, true)
+
+            // Ajax example
+            //                $.ajax().always(function () {
+            //                    simpleLoad($(this), false)
+            //                });
+
+            simpleLoad(btn, false)
+        });
+    });
+
+    function simpleLoad(btn, state) {
+        if (state) {
+            btn.children().addClass('fa-spin');
+            btn.contents().last().replaceWith(" Loading");
+        } else {
+            setTimeout(function () {
+                btn.children().removeClass('fa-spin');
+                btn.contents().last().replaceWith(" Refresh");
+            }, 2000);
+        }
+    }
+</script>

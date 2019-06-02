@@ -1,0 +1,192 @@
+<link href="__ADMIN__/css/plugins/codemirror/codemirror.css" rel="stylesheet">
+<body class="gray-bg  mini-navbar pace-done">
+<div class="ibox-content" style="width:800px;height:510px;padding-left: 0px">
+    <form class="form-horizontal" id="editforward" >
+        <div class="form-horizontal">
+            <div class="col-sm-12" style="padding-left: 0px;">
+                <div class="form-group hidden">
+                    <label class="col-sm-2 control-label"></label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="id" value="{$forward.id}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属软件</label>
+                    <div class="col-sm-10">
+                        <select class="form-control m-b selectpicker" name="sid" id="sid" data-live-search="true"
+                                data-live-search-placeholder="搜索" data-style="btn-white">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">转发标签</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" value="{$forward.name}"
+                               placeholder="请输入函数标签,限制提交字母数字">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">转发地址</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="url" value="{$forward.url}"
+                               placeholder="请输入算法转发地址,必须带http和结尾/">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">请求方式</label>
+                    <div class="col-sm-10">
+                        <select class="form-control m-b selectpicker" name="type" id="type"  data-style="btn-white">
+                            <option value="0" {$forward.type==0?"selected":""}>GET</option>
+                            <option value="1" {$forward.type==1?"selected":""}>POST</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">使用说明</label>
+                    <div class="col-sm-10" style="margin-top:5px;">
+                        1、该功能为post或get数据转发功能，客户端参数以a=b&c=d方式转给转发的URL<br />
+                        2、根据该提供可实现算法与程序分离，基本上可0破解，且算法在自己服务器上
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12" style="position: fixed;bottom: 15px;">
+            <div class="col-sm-offset-5">
+                <button class="btn btn-sm btn-white" type="submit">{$sbName}</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-sm btn-white" type="button" onclick="closeP()">{$cnName}</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__ADMIN__/js/plugins/layer/laydate/laydate.js"></script>
+<link href="__ADMIN__/css/bootstrap-select.min.css" rel="stylesheet"/>
+<script src="__ADMIN__/js/bootstrap-select.min.js"></script>
+<script src="__ADMIN__/js/i18n/defaults-zh_CN.min.js"></script>
+
+<script>
+
+    function closeP() {
+        //关闭iframe页面
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+    }
+
+    //jquery加载后执行的
+    (function ($) {
+
+        //字母数字
+        jQuery.validator.addMethod("alnum", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+        }, "只能包括英文字母和数字");
+        //ajax获取用户所有软件数据
+        $.ajax({
+            type: 'get',
+            url: '/admin/soft/getSoftListsimple.html',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                //请求成功
+                if (data.code < 0) {
+                    layer.msg(data.msg, {icon: 5});
+                } else {
+                    for (i = 0; i < data.total; i++) {
+                        var pack = data.rows[i].name;
+                        $("#sid").append($("<option value='" + data.rows[i].id + "'>" + pack + "</option>"))
+                    }
+                    if ({$forward.id}>0) //如果是修改用户信息
+                    {
+                        $("#sid").selectpicker('val', '{$forward.sid}');
+                    }
+                    $("#sid").selectpicker("refresh");
+                }
+            },
+            error: function () {
+                // view("异常！");
+                layer.msg("网络错误！", {inco: 5});
+            }
+        });
+        //表单验证
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#editforward").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 1,
+                    maxlength:20,
+                    alnum:true
+                },
+                value: {
+                    required: true,
+                    minlength: 1,
+                    maxlength:200
+                },
+                url:{
+                    url:true
+                }
+            },
+            messages: {
+                cardValue: {
+                    required: icon + "请输入名称 ",
+                    minlength: icon + "必须1-20个字符以上",
+                    maxlength: icon + "必须1-20个字符以上"
+                },
+                cardPrice:{
+                    required: icon + "请输入内容 ",
+                    minlength: icon + "必须1-200个字符以上",
+                    maxlength: icon + "必须1-200个字符以上"
+                }
+            },
+            submitHandler: function (form) {
+                if($("#sid").val()=='' || $("#sid").val()==null)
+                {
+                    layer.msg('所属软件必须选择', {icon: 5});
+                    return false;
+                }
+                var formParam = $("#editforward").serialize();
+                //ajax提交更新用户数据
+                $.ajax({
+                    type: 'post',
+                    url: '/admin/soft/addForwardUrl.html',
+                    data: formParam,
+                    cache: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        //请求成功
+                        if (data.code < 0) {
+                            layer.msg(data.msg, {icon: 5});
+                        } else {
+                            layer.open({
+                                title: '成功',
+                                content: data.msg
+                                , btn: ['知道啦']
+                                , yes: function (index, layero) {
+                                    //按钮【按钮一】的回调\
+                                    //刷新父页面
+                                    //window.parent.location.reload();
+                                    window.parent.reload();
+                                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                    parent.layer.close(index);  // 关闭layer
+                                }
+                            });
+
+                        }
+                    },
+                    error: function () {
+                        // view("异常！");
+                        alert("网络错误！");
+                    }
+                });
+            }
+        });
+    })(jQuery);
+    function getSelectedText(name){
+        var obj=document.getElementById(name);
+        for(i=0;i<obj.length;i++){
+            if(obj[i].selected==true){
+                return obj[i].innerText; //关键是通过option对象的innerText属性获取到选项文本
+            }
+        }
+    }
+</script>

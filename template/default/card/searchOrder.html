@@ -1,0 +1,70 @@
+<style xmlns="http://www.w3.org/1999/html">
+    /*web background*/
+    .container {
+        display: table;
+        height: 100%;
+    }
+
+    .row {
+
+    }
+
+    /* centered columns styles */
+    .row-centered {
+        text-align: center;
+    }
+
+    .col-centered {
+        display: inline-block;
+        float: none;
+        margin-right: -4px;
+    }
+
+    td {
+        height: 50px;;
+    }
+</style>
+<link href="__ADMIN__/css/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+<link href="__ADMIN__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<body class="gray-bg  mini-navbar pace-done">
+<div class="container">
+    <div class="row row-centered ">
+        <div class="col-md-6 col-centered">
+            <div class="article-title text-center">
+
+            </div>
+
+            <div class="ibox-content">
+                <form class="form-horizontal"action="#" method="get">
+                    <table class="table">
+                        <h4>查询您的订单</h4>
+                        <tbody>
+                        <tr>
+                            <td style="width: 150px;"><strong>订单号：</strong>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="orderno" value=""
+                                       placeholder="选填"
+                                       style="border-top: 0;border-left: 0;border-right: 0;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><strong>联系邮箱：</strong>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="email" value=""
+                                       placeholder="选填"
+                                       style="border-top: 0;border-left: 0;border-right: 0;">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline btn-default"><i class="fa fa-search"> 查询订单</i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

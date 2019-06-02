@@ -1,0 +1,21 @@
+function MyObj(men1,men2,men3)
+{
+this.men1=men1;//属性
+this.men2=men2;//属性
+this.men3=men3;//属性
+this.all=fuckall;//方法
+}
+function fuckall ()
+{
+return this.men1+String(this.men2)+this.men3;
+}
+function OX(what,time,temp)//返回自定义对象
+{
+var sb=new MyObj(what,time,temp);
+return sb;
+}
+function OXOX(what,time,temp)//调用自定义对象
+{
+var sb=new MyObj(what,time,temp);
+return sb.all();
+}//JS自定义对象掩演示

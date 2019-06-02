@@ -1,0 +1,293 @@
+<body >
+<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="widget navy-bg text-center" style="height: 200px;">
+                    <h1>{$user.username}</h1>
+                    <div class="m-b-sm">
+                        <img alt="image" class="img-circle" src="{$user.avatar}" style="width:90px;height: 90px;;">
+                    </div>
+                    <p class="font-bold">{$user.group_id}</p>
+
+                </div>
+            </div>
+        <div class="col-sm-9">
+            <div class="col-sm-4">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 软件数量 </span>
+                            <h2 class="font-bold">{$softTotal}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-user-plus fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 用户总数 </span>
+                            <h2 class="font-bold">{$userTotal}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-trophy fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 今日收入 </span>
+                            <h2 class="font-bold">{$todayMoney}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-signal fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 在线人数 </span>
+                            <h2 class="font-bold">{$onlineTotal}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-btc fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 总收入 </span>
+                            <h2 class="font-bold">{$sumMoney}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-user fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 过期用户 </span>
+                            <h2 class="font-bold">{$timeoutTotal}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="m-b-md">
+                        <a href="javascript:showChangePwd()" class="btn btn-white btn-xs pull-right">修改密码</a>
+                        <a href="javascript:showChangeInfo()" class="btn btn-white btn-xs pull-right">修改资料</a>
+                        <h2>个人资料</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <dl class="dl-horizontal">
+                        <dt>Secret Key：</dt>
+                        <dd><span id="SecretKey">{$user.user_id}</span>
+                            <a class="text-navy" style="margin-left:10px;" onclick="javascript:resetSecretKey()">重置</a>
+                        </dd>
+                        <br>
+                        <dt>真实姓名：</dt>
+                        <dd>{$user.name}</dd>
+                        <br>
+                        <dt>支付宝：</dt>
+                        <dd>{$user.alipay}
+
+                        </dd>
+                        <br>
+                        <dt>会员等级：</dt>
+                        <dd>
+
+                            {$user.group_id}
+
+
+
+
+
+
+
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-sm-7" id="cluster_info">
+                    <dl class="dl-horizontal">
+                        <dt>账户余额：</dt>
+                        <dd>{$user.money}
+                            <a class="text-navy" style="margin-left:10px;" onclick="javascript:toPay()">充值</a>
+                            <a class="text-navy" style="margin-left:10px;" onclick="javascript:toTx()">提现</a>
+                        </dd>
+                        <br>
+                        <dt>QQ：</dt>
+                        <dd>{$user.qq}</dd>
+                        <br>
+                        <dt>Email：</dt>
+                        <dd>{$user.email}</dd>
+                        <br>
+                        <dt>手机：</dt>
+                        <dd>{$user.phone}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row m-t-sm">
+                <div class="col-sm-12">
+                    <div class="panel blank-panel">
+                        <div class="panel-heading">
+                            <div class="panel-options">
+                                <ul class="nav nav-tabs">
+                                    <li><a href="#tab-1" data-toggle="tab">系统消息</a></li>
+                                    <li><a href="#tab-2" data-toggle="tab">最近登陆</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-1">
+                                    <div class="feed-activity-list">
+                                        <div class="feed-element">
+
+
+
+                                            <div class="media-body ">
+                                                {volist name="msg" id="vo"}
+                                                <small class="text-muted">{$vo.sendTime} 来自 <strong>{$vo.type}</strong></small>
+                                                <div class="well">{$vo.msg}</div>
+                                                {/volist}
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab-2">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>时间</th>
+                                            <th>登陆IP</th>
+                                            <th>地理信息</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                        {volist name="location" id="vo"}
+                                        <tr>
+                                            <td>{$vo.login_time}</td>
+                                            <td><a href="http://www.ip138.com/ips138.asp?ip={$vo.ip}&action=2" target="_blank">{$vo.ip}</a></td>
+                                            <td><p class="small">{$vo.location}</p></td>
+                                        </tr>
+                                        {/volist}
+
+
+
+
+
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function showChangePwd() {
+        layer.open({
+            type: 2,
+            title: '{$user.username} - 修改密码',
+            shadeClose: true,
+            shade: false,
+            offset: '100px',
+            area: ['400px', '400px'],
+            content: ['admin/user/changePwd.html','no']
+        });
+    }
+    function showChangeInfo() {
+        layer.open({
+            type: 2,
+            title: '{$user.username} - 修改资料',
+            shadeClose: true,
+            shade: false,
+            offset: '100px',
+            area: ['400px', '600px'],
+            content: ['admin/user/changeInfo.html','no']
+        });
+    }
+    function resetSecretKey(){
+        layer.confirm('重置Secret Key将会导致您已发布的后台接口管理程序无法通过验证，您确定要重置吗？', {icon: 3, title:'提示'}, function(index){
+            //do something
+            $.ajax({
+                type:'post',
+                url:'/admin/user/resetKey.html',
+                cache:false,
+                dataType:'json',
+                success:function(data){
+                    //alert(data.msg);
+                    $("#SecretKey").text(data.SecretKey);
+                },
+                error : function() {
+                    // view("异常！");
+                    alert("网络错误！");
+                }
+            });
+
+            layer.close(index);
+        });
+    }
+    function toPay()
+    {
+        //打开充值frame
+        layer.open({
+            type: 2,
+            title: '{$user.username} - 用户充值',
+            shadeClose: true,
+            shade: false,
+            offset: '100px',
+            area: ['400px', '300px'],
+            content: ['admin/user/payPage.html','no']
+        });
+    }
+    function toTx()
+    {
+        //打开提现frame
+        layer.open({
+            type: 2,
+            title: '{$user.username} - 用户提现',
+            shadeClose: true,
+            shade: false,
+            offset: '100px',
+            area: ['400px', '300px'],
+            content: ['admin/user/txPage.html','no']
+        });
+    }
+</script>

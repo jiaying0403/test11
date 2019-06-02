@@ -1,0 +1,190 @@
+<div class="ibox-content" style="width:800px;height:480px;padding-left: 0px">
+    <form class="form-horizontal" id="editCard">
+        <div class="form-horizontal">
+            <div class="col-sm-12" style="padding-left: 0px;">
+                <div class="form-group hidden">
+                    <label class="col-sm-2 control-label"></label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="id" value="{$card.id}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属软件</label>
+                    <div class="col-sm-10">
+                        <select class="form-control m-b selectpicker" name="sid" id="sid" data-live-search="true"
+                                data-live-search-placeholder="搜索" data-style="btn-white">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">卡类型</label>
+                    <div class="col-sm-10">
+                        <select class="form-control m-b selectpicker" name="type" id="type" data-live-search="true"
+                                data-live-search-placeholder="搜索" data-style="btn-white">
+                            <option value="0" {$card.type==0?"selected":""}>点卡</option>
+                            <option value="1" {$card.type==1?"selected":""}>分卡</option>
+                            <option value="2" {$card.type==2?"selected":""}>时卡</option>
+                            <option value="3" {$card.type==3?"selected":""}>天卡</option>
+                            <option value="4" {$card.type==4?"selected":""}>周卡</option>
+                            <option value="5" {$card.type==5?"selected":""}>月卡</option>
+                            <option value="6" {$card.type==6?"selected":""}>年卡</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">卡值</label>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="cardValue" value="{$card.cardValue}" placeholder="￥">
+                    </div>
+                    <label class="col-sm-2 control-label">售价</label>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="cardPrice" value="{$card.cardPrice}" placeholder="￥">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注</label>
+
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" placeholder="请输入内容"
+                                  name="remark">{$card.remark}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12" style="position: fixed;bottom: 15px;">
+            <div class="col-sm-offset-5">
+                <button class="btn btn-sm btn-white" type="submit" >{$sbName}</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-sm btn-white" type="button" onclick="closeP()">{$cnName}</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__ADMIN__/js/plugins/layer/laydate/laydate.js"></script>
+<link href="__ADMIN__/css/bootstrap-select.min.css" rel="stylesheet"/>
+<script src="__ADMIN__/js/bootstrap-select.min.js"></script>
+<script src="__ADMIN__/js/i18n/defaults-zh_CN.min.js"></script>
+<script>
+    function closeP() {
+        //关闭iframe页面
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+    }
+    //jquery加载后执行的
+    (function ($) {
+        //ajax获取用户所有软件数据
+        $.ajax({
+            type: 'get',
+            url: '/admin/soft/getSoftListsimple.html',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                //请求成功
+                if (data.code < 0) {
+                    layer.msg(data.msg, {icon: 5});
+                } else {
+                    for (i = 0; i < data.total; i++) {
+                        var pack = data.rows[i].name;
+                        $("#sid").append($("<option value='" + data.rows[i].id + "'>" + pack + "</option>"))
+                    }
+                    if ({$card.id}
+                >
+                    0
+                ) //如果是修改用户信息
+                    {
+                        $("#sid").selectpicker('val', '{$card.sid}');
+                    }
+                    $("#sid").selectpicker("refresh");
+                }
+            },
+            error: function () {
+                // view("异常！");
+                layer.msg("网络错误！", {inco: 5});
+            }
+        });
+        //表单验证
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#editCard").validate({
+            rules: {
+                cardValue: {
+                    required: true,
+                    minlength: 1,
+                    maxlength:8,
+                    minNumber:2
+                },
+                cardPrice: {
+                    required: true,
+                    minlength: 1,
+                    maxlength:8,
+                    minNumber:2
+                }
+            },
+            messages: {
+                cardValue: {
+                    required: icon + "请输入卡值 ",
+                    minlength: icon + "卡值必须1-8个字符以上",
+                    maxlength: icon + "卡值必须1-8个字符以上"
+                },
+                cardPrice:{
+                    required: icon + "请输入售价 ",
+                    minlength: icon + "售价必须1-8个字符以上",
+                    maxlength: icon + "售价必须1-8个字符以上"
+                }
+            },
+            submitHandler: function (form) {
+
+                if($("#sid").val()=='' || $("#sid").val()==null)
+                {
+                    layer.msg('所属软件必须选择', {icon: 5});
+                    return false;
+                }
+                var formParam = $("#editCard").serialize();
+                var formParam =formParam+"&"+"sname="+getSelectedText("sid");
+                    //ajax提交更新用户数据
+                $.ajax({
+                    type: 'post',
+                    url: '/admin/card/editCardType.html',
+                    data: formParam,
+                    cache: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        //请求成功
+                        if (data.code < 0) {
+                            layer.msg(data.msg, {icon: 5});
+                        } else {
+                            layer.open({
+                                title: '成功',
+                                content: data.msg
+                                , btn: ['知道啦']
+                                , yes: function (index, layero) {
+                                    //按钮【按钮一】的回调\
+                                    //刷新父页面
+                                    //window.parent.location.reload();
+                                    window.parent.reload();
+                                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                    parent.layer.close(index);  // 关闭layer
+                                }
+                            });
+
+                        }
+                    },
+                    error: function () {
+                        // view("异常！");
+                        alert("网络错误！");
+                    }
+                });
+            }
+        });
+    })(jQuery);
+    function getSelectedText(name){
+        var obj=document.getElementById(name);
+        for(i=0;i<obj.length;i++){
+            if(obj[i].selected==true){
+                return obj[i].innerText; //关键是通过option对象的innerText属性获取到选项文本
+            }
+        }
+    }
+</script>

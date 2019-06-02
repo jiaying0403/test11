@@ -1,0 +1,191 @@
+<div class="ibox-content" style="width:800px;height:480px;">
+    <form class="form-horizontal" id="updateVer">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="form-group hidden">
+                    <label class="col-sm-2 control-label">版本ID</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="id" value="{$ver.id}">
+                        <input type="text" class="form-control" name="sid" value="{$soft.id}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属软件</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="softname" value="{$soft.name}" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">版本名称</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="name" value="{$ver.name}">
+                    </div>
+                    <label class="col-sm-2 control-label">版本号</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="ver" value="{$ver.ver}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">版本状态</label>
+                    <div class="col-sm-4">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio1" value="0" name="status"
+                                   {$ver.status==0?"checked":""}>
+                            <label for="inlineRadio1"> 启用 </label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio2" value="1" name="status"
+                                   {$ver.status==1?"checked":""}>
+                            <label for="inlineRadio2"> 关闭 </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label">强制更新</label>
+                    <div class="col-sm-4">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio3" value="0" name="checkUpdate"
+                                   {$ver.checkUpdate==0?"checked":""}>
+                            <label for="inlineRadio3"> 是 </label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio4" value="1" name="checkUpdate"
+                                   {$ver.checkUpdate==1?"checked":""}>
+                            <label for="inlineRadio4"> 否 </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">版本MD5</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="MD5" value="{$ver.MD5}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">更新URL</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="updateUrl" value="{$ver.updateUrl}" placeholder="请输入更新地址，仅支持zip|rar|7z|png|jpg|bmp|jpeg|apk格式(选填)">
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="fileUpload" style="height: 34px;"><i class="layui-icon"></i>上传版本压缩包</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">更新描叙</label>
+
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3"  placeholder="请输入内容" name="notice">{$ver.notice}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注</label>
+
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" placeholder="请输入内容" name="reamrk">{$ver.reamrk}</textarea>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" style="position: fixed;bottom: 15px;">
+                    <div class="col-sm-offset-4">
+                        <button class="btn btn-sm btn-white" type="button" onclick="updateVer()">提交数据</button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-sm btn-white" type="button" onclick="closeP()">取消修改</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<link href="__ADMIN__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="__ADMIN__/css/plugins/jQueryUI/jquery-ui-1.10.5.custom.min.css" rel="stylesheet">
+<link rel="stylesheet" href="__ADMIN__/css/layui.css"  media="all">
+<script src="__ADMIN__/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="__ADMIN__/layui.js"></script>
+<script src="__ADMIN__/js/soft.js"></script>
+<script>
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#fileUpload' //绑定元素
+            ,url: '/admin/tools/upload' //上传接口
+            ,done: function(res, index, upload){
+                layer.closeAll('loading'); //关闭loading
+                //假设code=0代表上传成功
+                if(res.code == 0){
+                    //do something （比如将res返回的图片链接保存到表单的隐藏域）
+                    layer.msg(res.msg);
+                    $("input[name='updateUrl']").val(res.data.src);
+                }
+
+                //获取当前触发上传的元素，一般用于 elem 绑定 class 的情况，注意：此乃 layui 2.1.0 新增
+                var item = this.item;
+
+                //文件保存失败
+                //do something
+            }
+            ,accept: 'file' //允许上传的文件类型
+            ,size: 1024*50 //最大允许上传的文件大小
+            ,number:1
+            ,exts: 'zip|rar|7z|png|jpg|bmp|jpeg|apk'
+            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
+            ,error: function(index, upload){
+                layer.closeAll('loading'); //关闭loading
+            }
+        });
+    });
+    //layui上传与jquery validate冲突,所以手动
+    function updateVer()
+    {
+        var formParam = $("#updateVer").serialize();
+        if($("input[name='name']").val()=="")
+        {
+            $("input[name='name']").focus();
+            layer.msg("版本名称不能为空",{icon:5});
+            return false;
+        }
+        if($("input[name='ver']").val()=="")
+        {
+            $("input[name='ver']").focus();
+            layer.msg("版本号不能为空",{icon:5});
+            return false;
+        }
+        $.ajax({
+            type: 'post',
+            url: '/admin/soft/updateVer.html',
+            data: formParam,
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                //请求成功
+                if (data.code < 0) {
+                    layer.msg(data.msg, {icon: 5});
+                } else {
+                    layer.open({
+                        title: '成功',
+                        content: data.msg
+                        , btn: ['知道啦']
+                        , yes: function (index, layero) {
+                            //按钮【按钮一】的回调\
+                            //刷新父页面
+                            //window.parent.location.reload();
+                            window.parent.reload();
+                            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                            parent.layer.close(index);  // 关闭layer
+                        }
+                    });
+
+                }
+            },
+            error: function () {
+                // view("异常！");
+                alert("网络错误！");
+            }
+        });
+    }
+</script>

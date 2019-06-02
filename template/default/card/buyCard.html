@@ -1,0 +1,234 @@
+<style xmlns="http://www.w3.org/1999/html">
+    /*web background*/
+    .container {
+        display: table;
+        height: 100%;
+    }
+
+    .row {
+
+    }
+
+    /* centered columns styles */
+    .row-centered {
+        text-align: center;
+    }
+
+    .col-centered {
+        display: inline-block;
+        float: none;
+        margin-right: -4px;
+    }
+
+    td {
+        height: 50px;;
+    }
+</style>
+<link href="__ADMIN__/css/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+<link href="__ADMIN__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<body class="gray-bg  mini-navbar pace-done">
+<div class="container">
+    <div class="row row-centered ">
+        <div class="col-md-6 col-centered">
+            <div class="article-title text-center">
+                <h2>您即将购买的商品信息</h2>
+
+            </div>
+
+            <div class="ibox-content">
+
+                <form class="form-horizontal" id="buyCard" style="width:100%;height:100%" novalidate="novalidate"
+                      method="get" action="/admin/card/goBuy" onsubmit="return goBuy()">
+                    <table class="table">
+                        <h4>商品详情</h4>
+                        <tbody>
+                        <tr>
+                            <td style="width: 150px;"><strong>软件名称：</strong>
+                            </td>
+                            <td><strong>{$soft.name}</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><strong>最新版本：</strong>
+                            </td>
+                            <td><strong>{$soft.version}</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><strong>卡密类型：</strong>
+                            </td>
+                            <td><strong>
+                                <select class="form-control" id="cardId" style="border: 0" name="cardId">
+                                    {volist name="cardType" id="data"}
+                                    <option value="{$data.id}" type="{$data.type}" price="{$data.cardPrice}" cardValue="{$data.cardValue}">
+                                        <?php
+                                                            switch ($data->type) {
+                                        case 0:
+                                        echo "点卡";
+                                        break;
+                                        case 1:
+                                        echo "分卡";
+                                        break;
+                                        case 2:
+                                        echo "时卡";
+                                        break;
+                                        case 3:
+                                        echo "天卡";
+                                        break;
+                                        case 4:
+                                        echo "周卡";
+                                        break;
+                                        case 5:
+                                        echo "月卡";
+                                        break;
+                                        case 6:
+                                        echo "年卡";
+                                        break;
+                                        default:
+                                        }
+                                        ?>
+                                        ----面值{$data.cardValue}----价格{$data.cardPrice}
+                                    </option>
+                                    {/volist}
+                                </select>
+                            </strong></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><strong>作者备注：</strong>
+                            </td>
+                            <td><strong>{$soft.sale_remark}</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><strong>购买数量：</strong>
+                            </td>
+                            <td>
+                                <div class="col-sm-12"
+                                     style="border-right: 0;padding-left: 0;margin-left: 0;margin-right: 0;padding-right: 0">
+                                    <div class="col-sm-7"
+                                         style="border-right: 0;padding-left: 0;margin-left: 0;margin-right: 0;padding-right: 0">
+                                        <input type="text" class="form-control" name="num" value="1"
+                                               placeholder="请输入购买数量"
+                                               style="border-top: 0;border-left: 0;border-right: 0;"
+                                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                    <div class="col-sm-5" style="padding-top: 12px">
+                                        库存:<span id="kc" style="color:red;">0</span>张
+                                    </div>
+
+                                </div>
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><strong>联系邮箱：</strong>
+                            </td>
+                            <td><input type="text" class="form-control" name="email" value="" placeholder="卡密将发送到此邮箱"
+                                       style="border-top: 0;border-left: 0;border-right: 0;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><strong>支付方式：</strong>
+                            </td>
+                            <td><strong>
+                                <div class="radio radio-info radio-inline">
+                                    <input type="radio" id="inlineRadio1" value="weixin" name="payType" checked="">
+                                    <label for="inlineRadio1"> 微信 </label>
+                                </div>
+                                <div class="radio radio-inline">
+                                    <input type="radio" id="inlineRadio2" value="alipay" name="payType">
+                                    <label for="inlineRadio2"> 支付宝 </label>
+                                </div>
+                                <div class="radio radio-inline">
+                                    <input type="radio" id="inlineRadio3" value="qq" name="payType">
+                                    <label for="inlineRadio3"> QQ钱包</label>
+                                </div>
+                            </strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <h1>需要支付:<span id="price"><?php echo count($cardType)>0?$cardType[0]['cardPrice']:0;?></span>元
+                        </h1>
+                    </div>
+                    <input name="sid" style="display: none;" value="{$soft.id}">
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline btn-default"><i class="fa fa-check">提交订单</i>
+                        </button>
+                    </div>
+                </form>
+                <div class="hr-line-dashed"></div>
+                <a class="btn btn-white btn-outline" href="http://wpa.qq.com/msgrd?v=3&amp;uin=214783030&amp;site=qq&amp;menu=yes" target="_blank">
+                    <i class="fa fa-qq"> </i> 联系站长QQ:214783030(仅负责支付相关)
+                </a>
+                <a class="btn btn-white btn-outline" href="/admin/card/searchOrder" target="_blank">
+                    <i class="fa fa-search"> </i>  历史订单查询
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on("change", 'select#cardId', function () {
+        var num = $("input[name='num']").val();
+        $("#price").text($("#cardId").find("option:selected").attr("price") * num);
+        kc();
+    });
+    function goBuy() {
+        var num = $("input[name='num']").val();
+        if (!isInteger(num)) {
+            layer.msg("购买数量必须是整数", {icon: 5});
+            $("input[name='num']").val(1);
+            $("input[name='num']").focus();
+            return false;
+        }
+        if (num < 1) {
+            layer.msg("购买数量必须大于0", {icon: 5});
+            return false;
+        }
+        return true;
+    }
+    function kc() {
+        var total="";
+        var cardvalue=$("#cardId").find("option:selected").attr("cardvalue")
+        var type=$("#cardId").find("option:selected").attr("type")
+        $.ajax({
+            type: "post",
+            url: "/admin/card/cardInventory",
+            dataType: 'json',
+            data: 'sid={$soft.id}&type='+type+'&card_value='+cardvalue,
+            success: function (json) {
+                total= json.total;
+                $("#kc").text(total);
+            },
+            error:function(result) {
+                layer.alert("进入了error方法",{
+                    skin: 'layui-layer-molv'
+                });
+            }
+        });
+        return total;
+    }
+    function isInteger(obj) {
+        return obj % 1 === 0
+    }
+    $(function () {
+        //输入框的值改变时触发
+        $("input[name='num']").on("input", function (e) {
+            //检查输入的数字是否大于库存
+            if(parseInt($("input[name='num']").val())>parseInt($("#kc").text())){
+                layer.alert("对不起,库存不足",{
+                    skin: 'layui-layer-molv'
+                });
+                $("input[name='num']").val($("#kc").text());
+                $("input[name='num']").focus();
+            }
+            //获取input输入的值
+            $("#price").text($("#cardId").find("option:selected").attr("price") * e.delegateTarget.value);
+        });
+        kc();
+    });
+
+
+</script>

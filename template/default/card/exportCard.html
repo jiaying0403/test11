@@ -1,0 +1,231 @@
+<link href="__ADMIN__/css/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+<link href="__ADMIN__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<body class="gray-bg  mini-navbar pace-done">
+<div class="ibox-content" style="width:800px;height:480px;padding-left: 0px">
+    <form class="form-horizontal" id="addCard">
+        <div class="form-horizontal">
+            <div class="col-sm-12" style="padding-left: 0px;">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属软件</label>
+
+                    <div class="col-sm-10">
+                        <select class="form-control m-b selectpicker" name="sid" id="sid" data-live-search="true"
+                                data-live-search-placeholder="搜索" data-style="btn-white">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">卡类型</label>
+
+                    <div class="col-sm-4">
+                        <select class="form-control m-b selectpicker" id="type" name="type" data-style="btn-white">
+                            <option value="-1" selected>不限</option>
+                            <option value="0">点卡</option>
+                            <option value="1">分卡</option>
+                            <option value="2">时卡</option>
+                            <option value="3">天卡</option>
+                            <option value="4">周卡</option>
+                            <option value="5">月卡</option>
+                            <option value="6">年卡</option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">卡状态</label>
+                    <div class="col-sm-4">
+                        <select class="form-control m-b selectpicker" name="status" id="status"  data-style="btn-white">
+                            <option value="0" selected>不限</option>
+                            <option value="1">已使用</option>
+                            <option value="2">未使用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">系统出售</label>
+
+                    <div class="col-sm-10">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio17" value="0" name="sell" >
+                            <label for="inlineRadio17"> 系统可售 </label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio18" value="1" name="sell">
+                            <label for="inlineRadio18"> 自售卡</label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio21" value="2" name="sell" checked>
+                            <label for="inlineRadio21"> 不限</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">导出格式</label>
+
+                    <div class="col-sm-10">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio19" value="0" name="exportType" checked>
+                            <label for="inlineRadio20"> xls </label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio20" value="1" name="exportType">
+                            <label for="inlineRadio20"> txt</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注</label>
+
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" placeholder="请输入内容"
+                                  name="remark"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12" style="position: fixed;bottom: 15px;">
+            <div class="col-sm-offset-5">
+                <button class="btn btn-sm btn-white" type="submit">确定导出</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-sm btn-white" type="button" onclick="closeP()">取消导出</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__ADMIN__/js/plugins/layer/laydate/laydate.js"></script>
+<link href="__ADMIN__/css/bootstrap-select.min.css" rel="stylesheet"/>
+<script src="__ADMIN__/js/bootstrap-select.min.js"></script>
+<script src="__ADMIN__/js/i18n/defaults-zh_CN.min.js"></script>
+<script>
+    function closeP() {
+        //关闭iframe页面
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+    }
+    //jquery加载后执行的
+    (function ($) {
+        //ajax获取用户所有软件数据
+        $.ajax({
+            type: 'get',
+            url: '/admin/soft/getSoftListsimple.html',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                //请求成功
+                if (data.code < 0) {
+                    layer.msg(data.msg, {icon: 5});
+                } else {
+                    if(data.total<=1)$("#sid").append($("<option value='0'>请选择</option>"));
+                    $("#sid").append($("<option value='-1'>全部软件</option>"));
+                    for (i = 0; i < data.total; i++) {
+                        var pack = data.rows[i].name;
+                        $("#sid").append($("<option value='" + data.rows[i].id + "'>" + pack + "</option>"));
+                    }
+                    $("#sid").selectpicker("refresh");
+                }
+            },
+            error: function () {
+                // view("异常！");
+                layer.msg("网络错误！", {inco: 5});
+            }
+        });
+        //表单验证
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#addCard").validate({
+            rules: {
+                cardNum: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 8,
+                    digits:true
+                },
+                cardHead: {
+                    maxlength:4,
+                    chrnum:true
+                }
+            },
+            messages: {
+                cardNum:{
+                    digits:"必须输入整数"
+                }
+            },
+            submitHandler: function (form) {
+
+                if ($("#sid").val() == '' || $("#sid").val() == null) {
+                    layer.msg('所属软件必须选择', {icon: 5});
+                    return false;
+                }
+                var formParam = $("#addCard").serialize();
+                window.open('/admin/card/userExportCard.html?'+formParam);
+                window.parent.reload();
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                parent.layer.close(index);  // 关闭layer
+            }
+        });
+    })(jQuery);
+    function getSelectedText(name) {
+        var obj = document.getElementById(name);
+        for (i = 0; i < obj.length; i++) {
+            if (obj[i].selected == true) {
+                return obj[i].innerText; //关键是通过option对象的innerText属性获取到选项文本
+            }
+        }
+    }
+
+
+    //加载卡密类型
+    function loadType()
+    {
+        var id = $("#sid").val();
+        $.ajax({
+            type: 'get',
+            url: '/admin/card/getCardTypeSimple.html?id=' + id,
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                //请求成功
+                if (data.code < 0) {
+                    layer.msg(data.msg, {icon: 5});
+                } else {
+                    if (data.total == 0) {
+                        layer.msg("软件还没有添加卡密类型哦", {icon: 5});
+                        return false;
+                    }
+                    $("#type").html("");//清空重置
+                     $("#type").append($("<option value='-1'>所有卡类</option>"))
+                    for (i = 0; i < data.total; i++) {
+                        var pack = "";
+                        switch (data.rows[i].type) {
+                            case 0:
+                                pack = '点卡';
+                                break;
+                            case 1:
+                                pack = '分卡';
+                                break;
+                            case 2:
+                                pack = '时卡';
+                                break;
+                            case 3:
+                                pack = '天卡';
+                                break;
+                            case 4:
+                                pack = '周卡';
+                                break;
+                            case 5:
+                                pack = '月卡';
+                                break;
+                            case 6:
+                                pack = '年卡';
+                                break;
+                            default :break;
+                        }
+                        pack='['+pack+']'+'----[面值]:'+data.rows[i].cardValue+'----[单价]:'+data.rows[i].cardValue;
+                        $("#type").append($("<option value='" + data.rows[i].id + "'>" + pack + "</option>"))
+                    }
+                    $("#type").selectpicker("refresh");
+                }
+            },
+            error: function () {
+                // view("异常！");
+                layer.msg("网络错误！", {inco: 5});
+            }
+        });
+    }
+</script>
